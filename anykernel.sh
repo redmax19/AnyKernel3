@@ -4,17 +4,18 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=kernel_susfs_r8s
+kernel.string=kernelSU-exynos9830
 do.devicecheck=1
 do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=r8s
-device.name2=
-device.name3=
-device.name4=
-device.name5=
+device.name2=x1s
+device.name3=z3s
+device.name4=c1s
+device.name5=c2s
+device.name6=y2s
 supported.versions=
 supported.patchlevels=
 supported.vendorpatchlevels=

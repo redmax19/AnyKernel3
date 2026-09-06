@@ -1,38 +1,58 @@
-### AnyKernel3 Ramdisk Mod Script
-## osm0sis @ xda-developers
-
-### AnyKernel setup
-# global properties
+# AnyKernel3 Ramdisk Mod Script
+# osm0sis @ xda-developers
+# Edit by @physwizz Generic 
+## AnyKernel setup
+# begin properties
 properties() { '
-kernel.string=kernelSU-exynos9830
-do.devicecheck=1
+kernel.string=
+do.devicecheck=0
 do.modules=0
-do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
-device.name1=r8s
-device.name2=x1s
-device.name3=z3s
-device.name4=c1s
-device.name5=c2s
-device.name6=y2s
+device.name1=
+device.name2=
+device.name3=
+device.name4=
+device.name5=
 supported.versions=
-supported.patchlevels=
-supported.vendorpatchlevels=
 '; } # end properties
 
-### AnyKernel install
-# boot shell variables
+# shell variables
 block=/dev/block/by-name/boot;
 is_slot_device=0;
 ramdisk_compression=auto;
-patch_vbmeta_flag=auto;
 
-# import functions/variables and setup patching - see for reference (DO NOT REMOVE)
+## AnyKernel methods (DO NOT CHANGE)
+# import patching functions/variables - see for reference
 . tools/ak3-core.sh;
 
-# boot install
-dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
+ui_print "- Unpacking boot image";
 
-write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
-## end boot install
+## AnyKernel install
+dump_boot;
+
+mount /system/
+mount /system_root/
+
+# Change permissions
+chmod 755 /system/bin/busybox;
+
+# Deepsleep fix (@Chainfire)
+for i in `ls /sys/class/scsi_disk/`; do
+	cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null
+	if [ $? -eq 0 ]; then
+		echo 'temporary none' > /sys/class/scsi_disk/$i/cache_type
+	fi
+done;
+
+umount /system;
+umount /system_root;
+
+ui_print "- Installing new boot image";
+
+write_boot;
+
+ui_print "- Done";
+ui_print " ";
+
+## end install

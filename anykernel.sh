@@ -8,7 +8,7 @@ do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
-device.name1=cebu
+device.name1=guamp
 supported.versions=
 supported.patchlevels=
 '; }
